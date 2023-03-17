@@ -56,6 +56,8 @@ export default function MainImage({
   onSwipeRight: () => void;
   onSwipeLeft: () => void;
 } & React.ComponentPropsWithoutRef<"div">) {
+  const parentElRef = useRef<HTMLDivElement>(null);
+
   const onDragEnd = useCallback<Exclude<DragHandlers["onDragEnd"], undefined>>(
     (e, { offset, velocity }) => {
       e.stopPropagation();
@@ -69,6 +71,22 @@ export default function MainImage({
     [image.id, onSwipeLeft, onSwipeRight]
   );
 
+  // sometimes <AnimatePresence> doesn't remove the previous image properly
+  // so we manually hide it after a short delay.
+  // We don't remove the node because if we do, a 'React Error: NotFoundError' will be thrown.
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (parentElRef.current && parentElRef.current.children.length > 1) {
+        for (let i = 0; i < parentElRef.current.children.length - 1; i++) {
+          (parentElRef.current.children[i] as HTMLElement).style.display =
+            "none";
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [image.id]);
+
   return (
     <MainImageRoot imageAspectRatio={image.aspectRatio} {...rest}>
       {(rect) => {
@@ -76,6 +94,7 @@ export default function MainImage({
           <>
             <motion.div
               className="relative"
+              ref={parentElRef}
               layout
               initial={false}
               animate={rect}
