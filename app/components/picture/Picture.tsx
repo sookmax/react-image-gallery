@@ -9,7 +9,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import css from "./Picture.module.css";
 
 type ImageStatus = "preload" | "loading" | "loaded" | "cancelled";
 
@@ -225,7 +224,7 @@ const SkeletonImpl = React.memo(
         style={{
           position: "absolute",
           inset: 0,
-          animation: `2.5s ease 0s infinite normal none running ${css.shimmer}`,
+          animation: `2.5s ease 0s infinite normal none running shimmer`,
           backgroundImage:
             "linear-gradient(to right, transparent, 45%, #e5e7eb, 55%, transparent)",
           opacity: 0.3,
