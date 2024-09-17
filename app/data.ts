@@ -19,7 +19,8 @@ export function getImage(id: number): ImgData | undefined {
     id,
     srcSet: getImageSrcSet(
       id,
-      [3840, 2560, 2048, 1920, 1536, 1280, 1024, 768, 512],
+      // [3840, 2560, 2048, 1920, 1536, 1280, 1024, 768, 512],
+      [1920, 1536, 1280, 1024, 768, 512],
       aspectRatio
     ),
     aspectRatio,
